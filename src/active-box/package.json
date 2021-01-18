@@ -1,0 +1,28 @@
+{
+  "name": "active-box",
+  "version": "1.0.0",
+  "description": "A Vue3.0 component based on interactjs",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Darma1106/active-box.git"
+  },
+  "keywords": [
+    "resizable",
+    "draggable",
+    "vue3.0"
+  ],
+  "dependencies": {
+    "interactjs": "^1.10.2",
+    "vue": "^3.0.0"
+  },
+  "author": "darma",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Darma1106/active-box/issues"
+  },
+  "homepage": "https://github.com/Darma1106/active-box#readme"
+}

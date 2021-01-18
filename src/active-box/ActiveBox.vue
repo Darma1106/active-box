@@ -1,5 +1,5 @@
 <template>
-  <div class="interact" ref="ActiveBox">
+  <div class="active-box" ref="ActiveBox">
     <slot />
   </div>
 </template>
@@ -111,6 +111,7 @@ export default defineComponent({
               ctx.emit("dragStart", getBoxStatus(event.target));
             },
             move: (event) => {
+              ctx.emit("dragMove", getBoxStatus(event.target));
               updatePosition(event.target, event.dx, event.dy);
             },
 
@@ -132,6 +133,7 @@ export default defineComponent({
               ctx.emit("resizeStart", getBoxStatus(event.target));
             },
             move: (event) => {
+              ctx.emit("resizeMove", getBoxStatus(event.target));
               updateSize(event.target, event.rect.width, event.rect.height);
               updatePosition(
                 event.target,
