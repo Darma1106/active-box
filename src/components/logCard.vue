@@ -6,7 +6,9 @@
     :initHeight="200"
     :minWidth="100"
     :minHeight="100"
+    :edges="edge"
     class="log-card"
+    ref="LogCard"
     drag-handle=".card-head"
   >
     <div class="card-head">
@@ -19,29 +21,56 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from 'vue'
-import { ActiveBox } from '../active-box'
-import { BoxState, EdgeOptions } from '../active-box/types'
+import { defineComponent, onMounted, ref, Ref, nextTick } from "vue";
+import { ActiveBox } from "../active-box";
+import { BoxState, EdgeOptions } from "../active-box/types";
 
 export default defineComponent({
-  name: 'App',
+  name: "App",
   components: { ActiveBox },
   setup() {
     const a: BoxState = {
       x: 1,
       y: 1,
       width: 20,
-      height: 20
-    }
-    const b: EdgeOptions = {
-      top: true
-    }
+      height: 20,
+    };
+    const edge: EdgeOptions = {
+      top: true,
+      left: true,
+      bottom: true,
+      right: true,
+    };
+    const LogCard: Ref<null> | Ref<HTMLElement> = ref(null);
+    let initX: Ref<number> = ref(0);
+    let initY: Ref<number> = ref(0);
+    // 右下角定位
+    // function setBoxPosition(x: number, y: number): void {
+    //   const DOMRect: DOMRect = (LogCard.value as any).parentNode.getBoundingClientRect();
+    //   initX.value = DOMRect.width - 500 - x;
+    //   initY.value = DOMRect.height - 200 - y;
+    //   visible.value = true;
+    // }
+    // nextTick(() => {
+    //   setBoxPosition(20, 20);
+    // });
+    // const DOMRect = LogCard["value"]["parentNode"].getBoundingClientRect();
+    // this.initX = DOMRect.width - 520;
+    // this.initY = DOMRect.height - 220;
+
     onMounted(() => {
-      console.log(a, 'a')
-      console.log(b, 'b')
-    })
-  }
-})
+      console.log(a, "a");
+      console.log(edge, "b");
+    });
+    return {
+      edge,
+      initX,
+      initY,
+      LogCard,
+      DOMRect,
+    };
+  },
+});
 </script>
 
 <style lang="less" scope>

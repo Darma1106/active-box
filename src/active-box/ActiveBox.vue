@@ -1,82 +1,82 @@
 <template>
-  <div class="interact" ref="InteractVue">
+  <div class="interact" ref="ActiveBox">
     <slot />
   </div>
 </template>
 
 <script lang="ts">
-import Interact from 'interactjs'
-import { defineComponent, onMounted, PropType, ref, Ref } from 'vue'
-import { updatePosition, updateSize, getBoxStatus } from './init'
-import { BoxState, EdgeOptions } from './types'
+import Interact from "interactjs";
+import { defineComponent, onMounted, PropType, ref, Ref } from "vue";
+import { updatePosition, updateSize, getBoxStatus } from "./init";
+import { BoxState, EdgeOptions } from "./types";
 
 export default defineComponent({
-  name: 'Interact',
+  name: "Interact",
   props: {
     draggable: {
       type: Boolean,
-      default: true
+      default: true,
     },
 
     resizable: {
       type: Boolean,
-      default: true
+      default: true,
     },
 
     initX: {
       type: Number,
-      default: 0
+      default: 0,
     },
 
     initY: {
       type: Number,
-      default: 0
+      default: 0,
     },
 
     initWidth: {
       type: Number,
-      default: 300
+      default: 300,
     },
 
     initHeight: {
       type: Number,
-      default: 300
+      default: 300,
     },
 
     minWidth: {
       type: Number,
-      default: 10
+      default: 10,
     },
 
     minHeight: {
       type: Number,
-      default: 10
+      default: 10,
     },
 
     maxWidth: {
       type: Number,
-      default: Infinity
+      default: Infinity,
     },
 
     maxHeight: {
       type: Number,
-      default: Infinity
+      default: Infinity,
     },
 
     dragHandle: {
       type: String,
-      default: ''
+      default: "",
     },
 
     resizeBarWidth: {
       type: Number,
-      default: 10
+      default: 10,
     },
 
     edges: {
       type: Object as PropType<EdgeOptions>,
-      default: () => ({ left: true, right: true, bottom: true, top: true })
-    }
+      default: () => ({ left: true, right: true, bottom: true, top: true }),
+    },
 
     // dragEnd: {
     //   type: Function,
@@ -89,36 +89,36 @@ export default defineComponent({
     // },
   },
   setup(props, ctx) {
-    const InteractVue: any = ref(null)
+    const ActiveBox: any = ref(null);
     function init() {
-      updatePosition(InteractVue.value, props.initX, props.initY)
-      updateSize(InteractVue.value, props.initWidth, props.initHeight)
+      updatePosition(ActiveBox.value, props.initX, props.initY);
+      updateSize(ActiveBox.value, props.initWidth, props.initHeight);
 
-      const instance: Interact.Interactable = Interact(InteractVue.value)
+      const instance: Interact.Interactable = Interact(ActiveBox.value);
 
       if (props.draggable) {
         instance.draggable({
-          allowFrom: props.dragHandle || InteractVue.value,
+          allowFrom: props.dragHandle || ActiveBox.value,
 
           modifiers: [
             Interact.modifiers.restrictRect({
-              restriction: 'parent'
-            })
+              restriction: "parent",
+            }),
           ],
 
           listeners: {
             start: (event) => {
-              ctx.emit('dragStart', getBoxStatus(event.target))
+              ctx.emit("dragStart", getBoxStatus(event.target));
             },
             move: (event) => {
-              updatePosition(event.target, event.dx, event.dy)
+              updatePosition(event.target, event.dx, event.dy);
             },
 
             end: (event) => {
-              ctx.emit('dragEnd', getBoxStatus(event.target))
-            }
-          }
-        })
+              ctx.emit("dragEnd", getBoxStatus(event.target));
+            },
+          },
+        });
       }
 
       if (props.resizable) {
@@ -129,37 +129,41 @@ export default defineComponent({
 
           listeners: {
             start: (event) => {
-              ctx.emit('resizeStart', getBoxStatus(event.target))
+              ctx.emit("resizeStart", getBoxStatus(event.target));
             },
             move: (event) => {
-              updateSize(event.target, event.rect.width, event.rect.height)
-              updatePosition(event.target, event.deltaRect.left, event.deltaRect.top)
+              updateSize(event.target, event.rect.width, event.rect.height);
+              updatePosition(
+                event.target,
+                event.deltaRect.left,
+                event.deltaRect.top
+              );
             },
 
             end: (event) => {
-              ctx.emit('resizeEnd', getBoxStatus(event.target))
-            }
+              ctx.emit("resizeEnd", getBoxStatus(event.target));
+            },
           },
 
           modifiers: [
             Interact.modifiers.restrictEdges({
-              outer: 'parent'
+              outer: "parent",
             }),
 
             Interact.modifiers.restrictSize({
               min: { width: props.minWidth, height: props.minHeight },
-              max: { width: props.maxWidth, height: props.maxHeight }
-            })
-          ]
-        })
+              max: { width: props.maxWidth, height: props.maxHeight },
+            }),
+          ],
+        });
       }
     }
     onMounted(() => {
-      init()
-    })
-    return { InteractVue, init }
-  }
-})
+      init();
+    });
+    return { ActiveBox, init };
+  },
+});
 </script>
 
 <style>
